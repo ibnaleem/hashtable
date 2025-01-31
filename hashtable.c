@@ -78,13 +78,14 @@ char *generate_output_filename(const char *input_filename, const char *hash_type
     return output;
 } // generate_output_filename
 
-int write_to_file(const char *input_filename, char *hash_type) {
-
+int write_to_file(const char *input_filename, char *hash_type)
+{
     printf("[*] Computing hashtable for %s using %s algorithm\n", input_filename, hash_type);
 
     char *output_filename = generate_output_filename(input_filename, hash_type);
 
-    if (!output_filename) {
+    if (!output_filename)
+    {
         fprintf(stderr, "Error generating output filename\n");
         return -1;
     }
@@ -92,7 +93,8 @@ int write_to_file(const char *input_filename, char *hash_type) {
     FILE *input_file = fopen(input_filename, "r");
     FILE *output_file = fopen(output_filename, "w");
 
-    if (!input_file || !output_file) {
+    if (!input_file || !output_file)
+    {
         perror("Error opening file");
         exit(EXIT_FAILURE);
     }
@@ -101,26 +103,43 @@ int write_to_file(const char *input_filename, char *hash_type) {
     size_t len = 0;
     ssize_t read;
 
-    while ((read = getline(&line, &len, input_file)) != -1) {
+    while ((read = getline(&line, &len, input_file)) != -1)
+    {
+        // Remove the newline character if it exists
+        if (line[read - 1] == '\n')
+        {
+            line[read - 1] = '\0';
+            read--; // Adjust length for hashing
+        }
+
         char *hashed_line = NULL;
 
-        if (strcmp(hash_type, "md5") == 0) {
+        if (strcmp(hash_type, "md5") == 0)
+        {
             hashed_line = md5_hash(line, read);
         }
-        else if (strcmp(hash_type, "sha1") == 0) {
+        else if (strcmp(hash_type, "sha1") == 0)
+        {
             hashed_line = sha1_hash(line, read);
         }
-        else if (strcmp(hash_type, "sha256") == 0) {
+        else if (strcmp(hash_type, "sha256") == 0)
+        {
             hashed_line = sha256_hash(line, read);
         }
-        else if (strcmp(hash_type, "sha512") == 0) {
+        else if (strcmp(hash_type, "sha512") == 0)
+        {
             hashed_line = sha512_hash(line, read);
         }
-        else {
+        else
+        {
+            free(output_filename);
+            fclose(input_file);
+            fclose(output_file);
             return -1;
         }
-        
-        fprintf(output_file, "%s:%s", hashed_line, line);
+
+        fprintf(output_file, "%s:%s\n", hashed_line, line); // Added newline for clarity
+        free(hashed_line);                                  // Free allocated memory for hashed line
     } // while-loop
 
     free(line);
