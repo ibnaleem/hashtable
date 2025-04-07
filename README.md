@@ -32,14 +32,18 @@ qwerty
 mustang
 letmein
 ```
-**Output File ([`500-worst-passwords_sha1.txt`](https://github.com/ibnaleem/hashtable/blob/main/examples/500-worst-passwords_sha1.txt))**:
+**Output File ([`500-worst-passwords-sha1-hashtable.txt`](https://github.com/ibnaleem/hashtable/blob/main/examples/500-worst-passwords-sha1-hashtable.txt))**:
 ```
-2672275fe0c456fb671e4f417fb2f9892c7573ba:12345
-8851def7166796964bf58174a5f3f50d073d709d:dragon
-3c8b9f4b983afa9f644d26e2b34fa3e03a2bef16:qwerty
-95b679919194b7b37b298b9368f3b89a93e3cde4:696969
-059a9d50d1155bb31ad65df3e0cfb20c8f98894b:mustang
-34ca062314edaa193e03f318ae20ae134274b358:letmein
+5c6d9edc3a951cda763f650235cfc41a3fc23fe8:batman
+e68e11be8b70e435c65aef8ba9798ff7775c361e:trustno1
+5f50a84c1fa3bcff146405017f36aec1a10a9e38:thomas
+6c616f7c2d2fde9018a09f06eaefcfc7582bc7ba:tigger
+12e9293ec6b30c7fa8a0926af42807e929c1684f:robert
+3674951ec264a72168cb2d89a5f634e512f6629d:enter
+782f9b10621e362d5bd0def3a279b5e0908c9ebb:ashley
+badcfa3c62742b3bcc1dcd893e78713bd36aa430:thunder
+248510136410798c784ba702df249756ad286be4:cowboy
+f8248e12727710c946f73d8f6e02eb93530dd9de:silver
 ```
 
 ## Why Use This?  
@@ -51,19 +55,22 @@ letmein
    - Hashing is slow. This tool does the work upfront so lookups take **zero time** later.
 
 ## How to Use  
-**Install Dependencies** (OpenSSL):  
 ```bash
-$ brew install openssl  # macOS
-$ sudo apt install libssl-dev  # Linux
-```
-**Clone & Compile**
-```bash
-$ git clone https://github.com/ibnaleem/hashtable.git
+$ git clone https://github.com/ibnaleem/hashtable.git # Linux
 $ cd hashtable
-$ gcc -o hashtable hashtable.c -I/path/to/openssl/include -L/path/to/openssl/lib -lcrypto
-$ ./hashtable <input_file> <hash_type>
-# Example:
-$ ./hashtable passwords.txt sha512 
+$ python3 hashtable -h
+usage: Hashtable Generator [-h] -w WORDLIST -m HASHTYPE
+
+Generate precomputed hashtables (hash:pass) from a wordlist
+
+options:
+  -h, --help            show this help message and exit
+  -w, --wordlist WORDLIST
+                        The wordlist to create a hashtable of
+  -m, --hashtype HASHTYPE
+                        the hashtype to use for the hashtable
+
+🤝 Contribute: https://github.com/ibnaleem/hashtable
 ```
 Supported Hashes: `md5`, `sha1`, `sha256`, `sha512`. If you would like more hashing algorithms, please open a PR.
 ## How Websites Use This
